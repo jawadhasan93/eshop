@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Products v-for="item in getAllProducts"
+    <Pro v-for="item in getAllProducts"
     :key="item.id"
     :product = item
     />

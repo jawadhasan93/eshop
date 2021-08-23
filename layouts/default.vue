@@ -4,7 +4,8 @@
 
   <v-main>
     <v-container>
-      <Products/>
+      <Nav/>
+      <Nuxt/>
     </v-container>
   </v-main>
 </v-app>
