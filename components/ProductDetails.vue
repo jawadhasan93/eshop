@@ -11,7 +11,8 @@
                 {{ product.description }}
             </p>
         </div>
-        <v-btn @click="addToCart(product)">Buy</v-btn>
+        <v-btn @click="add(product)">Buy</v-btn>
+        <v-btn to="/products">Back</v-btn>
     </div>
     <div v-else class="container padding">
         <PageNotFound />
@@ -19,22 +20,22 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex'
+import {mapMutations} from 'vuex'
     export default {
+      props:['product'],
       data(){
         return{
           cartList:[],
         }
       },
-        props:['product'],
         methods:{
-          addToCart(toCart){
-            //this.cartList.push(toCart);
-            //localStorage.setItem("CartList", JSON.stringify(this.cartList));
-            //this.cartCount = this.cartList.length;
-            this.$store.dispatch("addProductItemToCart",{toCart})
+          ...mapMutations({
+            create:"cart/create"
+          }),
+          add(p){
+            this.create(p)
           },
-        }
+        },
     }
 </script>
 

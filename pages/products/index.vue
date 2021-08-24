@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Products v-for="item in getAllProducts"
+    <Products v-for="item in getAllProductsGetters"
     :key="item.id"
     :product = item
     />
@@ -8,15 +8,27 @@
 </template>
 
 <script>
-import { mapGetters} from "vuex"
+import { mapState, mapGetters, mapActions, mapMutations} from "vuex"
   export default {
+    props:['product'],
     data(){
       return {
       }
     },
     computed:{
+      // ...mapGetters({
+      //   getAllProductsGetters: "product/getAllProducts",
+      // })
       ...mapGetters({
-        getAllProducts: "getAllProduct",
+        getAllProductsGetters: "getAllProducts",
+      })
+    },
+    created(){
+      // this.getItemList().then(res=>console.log(res))
+    },
+    methods:{
+      ...mapActions({
+        getAllProductAction:"getItemList"
       })
     }
   }
