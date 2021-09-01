@@ -10,7 +10,7 @@ import { mapGetters } from 'vuex'
           //   productDetails: "product/getProductById"
           // })
             productDetails() {
-                return this.$store.getters.getProductById(this.$route.params.id);
+                return this.$store.getters.getItemDetails(this.$route.params.id);
             },
         }
     }
