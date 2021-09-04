@@ -171,7 +171,7 @@ export const state = () => ({
   //         image: "fe6.jpg"
   //       }
   // ],
-  itemList:[]
+  itemList: []
 });
 
 
@@ -184,61 +184,84 @@ export const getters = {
   getAllProducts: state => state.products
 };
 
-// export const getProducts = ({commit}) => {
-//   axios.get("https://jsonplaceholder.typicode.com/posts")
-//   .then(response =>{ commit('SET_PRODUCTS', response.data)})
-// }
-
 export const actions = {
-  getProducts ({commit}) {
-    console.log('from action');
+  getProducts({ commit }) {
     axios.get("http://localhost:4000/products")
-    .then(response =>{
-      console.log(response)
-      commit('SET_PRODUCTS', response.data)})
-  },
-  async addItem(context, payload) {
-    await this.$axios.$post("https://jsonplaceholder.typicode.com/posts")
-    .then(res => context.commit('create', payload))
+      .then(response => {
+        console.log(response)
+        commit('SET_PRODUCTS', response.data)
+      })
   },
 
-  async getItemList(context){
-    await fetch ('https://jsonplaceholder.typicode.com/posts')
-    .then(res=> context.commit('get',res.json()))
+  async addItem(context, payload) {
+    console.log('from product add item')
+    console.log(payload)
+    try {
+      console.log('try from product add item')
+
+      await axios.post("http://localhost:4000/products", payload)
+        .then(res => context.commit('create', res.data))
+    }
+    catch (e) {
+      console.log('error from product add item')
+    }
+  },
+//id paoar poreo loop kore . stop kora drkr
+  async removeItem(context, payload) {
+    try {
+      // console.log(payload)
+      let itemIndex = context.state.itemList.findIndex(el => {
+        return el.id == payload.id;
+      });
+
+      // console.log(itemIndex)
+
+      await axios.get(`http://localhost:4000/products/${payload.id}`).then((res) => {
+        context.commit('delete', { index: itemIndex });
+      });
+    }
+    catch (e) {
+      console.log('error from delete item')
+    }
+  },
+
+  async getItemList(context) {
+    await fetch('https://jsonplaceholder.typicode.com/posts')
+      .then(res => context.commit('get', res.json()))
     // await this.$axios.$get("https://jsonplaceholder.typicode.com/posts")
     // .then(res=> context.commit('get',res.data))
   },
 
-  async getItemById(context, id){
+  async getItemById(context, id) {
     await this.$axios.$get(`"https://jsonplaceholder.typicode.com/posts/${id}"`)
-    .then(res => context.commit('details', res.data))
+      .then(res => context.commit('details', res.data))
   },
 
-  async updateItem(context, payload){
-    await this.$axios.$post("https://jsonplaceholder.typicode.com/posts")
-    .then(res =>{
-      const resCarrier = res.data
-      const toUpdate = context.state.itemList.find(x=>x.id == resCarrier.id)
-      toUpdate = resCarrier
-      context.commit('update', toUpdate)
-    })
-  },
+  async updateItem(context, payload) {
 
-  async deleteItem(context, id){
-    let itemIndex = context.state.itemList.findIndex(x => x.id == item.id )
-    await this.$axios.$get(`"https://jsonplaceholder.typicode.com/posts/${id}"`)
-    .then(res => context.commit('delete', { index : itemIndex }))
-  },
-  async getData() {
-     axios.get("http://localhost:4000/products").then(res => context.commit('get', res.data))
-  },
+    try {
+      
+      await axios.post("http://localhost:4000/products", payload).then((res) => {
+
+        let itemIndex = context.state.itemList.findIndex(el => {
+          return el.id == payload.id;
+        });
+        context.commit('update', { index: itemIndex, data: res.data });
+      });
+
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
 };
 
 export const mutations = {
-  SET_PRODUCTS : (state, products) => { return state.itemList = products},
-  create(state, payload){ state.itemList.push(payload) },
-  get(state, payload){ state.itemList = payload },
-  details(state, payload){ state.itemDetails.push(payload) },
-  delete(state, payload){state.itemList.splice(payload.index, 1)},
-  // update(state, payload){ state.itemList.splice(payload.index, 1, payload.data) },
+  SET_PRODUCTS(state, products) { return state.itemList = products },
+  create(state, payload) { state.itemList.push(payload) },
+  get(state, payload) { state.itemList = payload },
+  details(state, payload) { state.itemDetails.push(payload) },
+  delete(state, payload) { state.itemList.splice(payload.index, 1)},
+
+  update(state, payload) { state.itemList.splice(payload.index, 1, payload.data) },
 }

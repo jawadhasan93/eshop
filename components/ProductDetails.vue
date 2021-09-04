@@ -2,13 +2,13 @@
     <div v-if="product" class="container py-5">
         <div class="hero-container">
             <div class="info-box">
-                <h1>{{ product.title }}</h1>
-                <p class="snippet">{{ product.snippet }}</p>
+                <h1>{{ product.Name }}</h1>
+                <p class="snippet">{{ product.Price }}</p>
             </div>
         </div>
         <div class="description-container">
             <p>
-                {{ product.description }}
+                {{ product.Description }}
             </p>
         </div>
         <v-btn @click="add(product)">Buy</v-btn>

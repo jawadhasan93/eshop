@@ -24,7 +24,7 @@
       <v-btn
         color="deep-purple lighten-2"
         text
-        @click="removeFromCart(cart.id)"
+        @click="removeFromCart(cart)"
       >
         Remove
       </v-btn>
@@ -58,8 +58,8 @@ import { mapGetters, mapState, mapMutations } from 'vuex'
           deleteFromCart:"cart/delete"
       }),
 
-    removeFromCart(id){
-        this.deleteFromCart(id)
+    removeFromCart(cart){
+        this.deleteFromCart(cart)
         // console.log(id)
     }
     },

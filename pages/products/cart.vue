@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
   export default {
     data(){
       return {
@@ -17,8 +17,13 @@ import { mapGetters } from 'vuex'
         CartList:"cart/getAllCartList"
       })
     },
+    methods:{
+      ...mapActions({
+        getCartsAction: "cart/getCarts"
+      })
+    },
     created(){
-      // this.CartList
+      this.getCartsAction()
     }
   }
 </script>
